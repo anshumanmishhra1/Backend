@@ -10,7 +10,7 @@
     👉Node.js is javaScript runtime environment 
 
 
-# 📍Node.js and npm -> 
+📍Node.js and npm -> 
 
     👉npm stands for node package manager where we can find all packages of node related and others.
 
@@ -24,7 +24,7 @@
     👉 npm i packagename  -> for installing
     👉npm uninstall packagename -> for uninstalling
     👉npm i accessibility@3.0.9 -> for downloading particular version
-# 📍npm init -> 
+📍npm init -> 
     👉package.json (lekha jokha of the project)
 
     👉const fs = require('fs'); it means we have the power of 'fs' in our varibale fs
@@ -39,7 +39,7 @@
 
     👉fs.unlink is used to remove any files
 
-# 📌Understanding HTTP Modules 
+ 📌Understanding HTTP Modules 
 
     👉 There are some rules and regulation on the Internet and are pre-installed in the software of your Operating System.
 
@@ -81,7 +81,7 @@
     👉DevDependencies means the packages which only will help in the development and when our project is completed then we aren't using these packages.
 
 
-# 📍Express.js Framework : 
+📍Express.js Framework : 
 
     📌Introduction to Express.js : 
         Expresss js is a npm package and it's a framework(framework means it gives a flow how to do any work or task). Express.js manage everything from receiving the request and giving the response.
@@ -116,4 +116,86 @@
 
         for example : We send a request to a server, server recieves the request now we have a two options. Number 1 is that it directly goes to the destination, Number 2 is that first it will do some work like printing and the then reach the destination.
 
-        👉
+ 📍Form Handling and Working with the forms 
+
+    📌Session And Cookies -> we can put any data on frontend and browser and when we try to request on backend then data saved on the frontend automatically went to the backend. And the thing which is saved on the fronend is known as cookies. If you logged out then we say session is over
+
+    👉You send plain text to the server but backend received as a 'blob; and now we have to handle such that we can read.
+
+        app.use(express.json());
+        app.use(express.urlencoded({extended:true}));
+    
+
+    📍Dynamic Routing : We genrally see some routes where only one part change such as /author/harsh, /author/hanshika, /author/hashika, here we can see some part is similar i.e 'author'
+
+
+📍Data Storage (MongoDb or Mongoose) 
+
+    👉 Data storage is a place where we dave the info of the users.
+
+    👉 we can write some thing in .txt file but can't put anythin like images, videos so for this problem Database come to the center.
+
+    📌SQL : Putting the data in the form of tables. Here we read about NoSQL in which there is no tables here there is data is stored in the form of objects.
+
+    👉 Here NoSQL is a concept in which we learn about MongoDb
+
+    👉 There are two server in the backend i.e application server and database server. 
+    
+        🤜 Application server are those who helps in router and getting request(login, logout).
+
+        🤜 Database server
+
+        CODE                DATABASE
+        ---------------------------------- 
+        mongoose.connect -> databse create
+        model create     -> collection
+        CREATE           ->  Document
+
+
+📌CRUD Operation through routes
+        const express = require('express');
+        const app = express();
+        const port  = 5000;
+        const userModel = require('./usermodel');
+
+        app.get('/',(req,res)=>{
+            res.send("hey")
+        })
+
+        //👉for Creating Users
+        app.get('/create',async (req,res)=>{
+            let createduser = await userModel.create({
+                name : "Harsh",
+                email : 'anshuman@gmail.com',
+                username : "Harsh Sharma"
+            })
+            
+            res.send(createduser);
+            
+        })
+
+        //👉for Updating Users
+        app.get('/update',async (req,res)=>{
+        let updateduser = await userModel.findOneAndUpdate({username:"anshumanmishhra"},{name:"Anshuman Mishra"},{new:true})
+            
+            res.send(updateduser);
+            
+        })
+
+        //👉for Deleting Users
+        app.get('/delete',async (req,res)=>{
+        let users = await userModel.findOneAndDelete({username:"anshumanmishhra"})
+            
+            res.send(users);
+            
+        })
+
+        //👉for Reading Users
+        app.get('/read', async (req,res)=>{
+            let users = await userModel.find();
+            res.send(users)
+        })
+
+        app.listen(port,()=>{
+            console.log(`server started at ${port}`);
+        });
