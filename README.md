@@ -199,3 +199,68 @@
         app.listen(port,()=>{
             console.log(`server started at ${port}`);
         });
+
+
+# 📍Authentication and Authorization
+
+    👉 Before giving profile to the user it is neccesary to check who is the user. it is knowns as Authentication 
+
+    👉 I have proven my identity, and I want to change something in the database, so we check if the user has admin right or not, so we can say that the user is not authorised for this task. it is known as Authorization
+
+    👉 server often forget that who are you so server will ask for each task who are you? for this cookies and session come forward to solve this problem
+
+    🔖we have to learn about three things : 
+        1. Cookie kaise set karte hai and read krte hai :
+            app.get('/',(req,res)=>{
+                res.cookie("name","anshuman");
+                res.send("done");
+            });
+
+            app.get('/read', function (req,res){
+                console.log(req.cookies);
+                res.send("read page");
+            });
+
+        2. bcrypt kaise use krte hai for password encryption and decryption : 
+
+            encrypting  : 
+                app.get('/', function (req,res){
+                    bcrypt.genSalt(10, function(err,salt){
+                        bcrypt.hash("pololololooo",salt,function(err,hash){
+                            //store hash in yur passwrod
+                            console.log(hash);
+                        })
+                    })
+                });
+            
+            decrypting : 
+                app.get('/', function (req,res){
+                        bcrypt.compare("pololololoo","$2b$10$J.ExyABugXvT8g41GLPTGu3jO4fb06hhh.QqLA60M6ryihY.r.eQG", function(err,result){
+                        console.log(result);
+                    })
+                });
+
+
+
+        3. jwt kya hai and jwt mein data kaise store karein aur bahar nikale 
+
+        👉JWT is made of three things 
+                //jwt : 
+
+                    app.get('/', function (req,res){
+                        let token = jwt.sign({email: "harsh@example.con"}, "secret");
+                        res.cookie("token",token);
+                        res.send('done');
+                    });
+
+                    //for verification : 
+                    app.get('/read',function(req,res){
+                        let data = jwt.verify(req.cookies.token,"secret");
+                        console.log(data);
+                    })
+
+
+
+
+
+
